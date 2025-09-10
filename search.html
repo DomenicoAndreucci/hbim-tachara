@@ -1,25 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>HBIM Tachara — Search</title>
+<title>HBIM Tachara — Search (fotografo/anno/testo)</title>
 <style>
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:1rem;line-height:1.45}
-input{padding:.5rem .6rem;border:1px solid #bbb;border-radius:.4rem;width:320px}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+input,select{padding:.5rem .6rem;border:1px solid #bbb;border-radius:.4rem}
 table{border-collapse:collapse;width:100%;margin-top:1rem}
 th,td{border:1px solid #ddd;padding:.5rem;vertical-align:top}
 th{background:#f7f7f7;text-align:left}
 .badge{background:#eee;border-radius:.4rem;padding:.15rem .4rem;margin-left:.3rem;font-size:.9em}
 #status{margin-left:.8rem;color:#666}
+small{color:#666}
 </style>
 </head>
 <body>
-<h1>HBIM Tachara — Search (fotografo/anno/testo)</h1>
-<div>
-  <input id="q" placeholder="Cerca es. 'Andreucci', '1966', 'Door'">
-  <span id="status">idle</span>
+<h1>HBIM Tachara — Search</h1>
+
+<div class="controls">
+  <input id="q" size="32" placeholder="Cerca testo (es. 'Door', 'Cornice', 'Andreucci')">
+  <input id="phot" size="18" placeholder="Fotografo (es. Andreucci)">
+  <input id="year" size="10" placeholder="Anno (es. 1966)">
+  <button id="btnReset">Reset</button>
+  <span id="status">carico…</span>
 </div>
+<small>Consiglio: prova una delle tre ricerche, o combinale (sono in AND).</small>
+
 <table id="tbl" hidden>
   <thead>
     <tr>
@@ -35,65 +43,99 @@ th{background:#f7f7f7;text-align:left}
 
 <script>
 const statusEl = document.getElementById('status');
-const q = document.getElementById('q');
+const q   = document.getElementById('q');
+const phot= document.getElementById('phot');
+const year= document.getElementById('year');
+const btnReset = document.getElementById('btnReset');
 const tbl = document.getElementById('tbl');
 const tbody = tbl.querySelector('tbody');
 
-// Carica JSON e mappe (se presenti)
 async function safeFetch(url){
   try{ const r=await fetch(url); if(!r.ok) throw new Error(r.status); return await r.text(); }
   catch{ return null; }
 }
-function csvToArray(text){
+function csvToRows(text){
   if(!text) return [];
-  const rows = text.split(/\r?\n/).filter(Boolean);
-  const head = rows.shift().split(',').map(s=>s.trim());
-  return rows.map(line=>{
+  const lines = text.split(/\r?\n/).filter(Boolean);
+  if(!lines.length) return [];
+  const head = lines.shift().split(',').map(s=>s.trim());
+  return lines.map(line=>{
     const cells = line.split(','); const o={};
     head.forEach((h,i)=> o[h]= (cells[i]||'').trim());
     return o;
   });
 }
+function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
 let DATA=null, collMap=new Map(), iiifMap=new Map();
 
 async function loadAll(){
   statusEl.textContent='carico dati…';
   DATA = await fetch('viewer_data.json').then(r=>r.json());
-  const c = await safeFetch('site/collections_map.csv');
-  const m = await safeFetch('site/manifests/manifests_map.csv');
-  csvToArray(c).forEach(r=> collMap.set(r.ifc_guid, r.collection_url));
-  csvToArray(m).forEach(r=> iiifMap.set(r.ifc_guid, r.manifest_url));
+
+  // 🔴 ora le mappe vengono lette dalla ROOT
+  const c = await safeFetch('collections_map.csv');
+  const m = await safeFetch('manifests_map.csv');
+  csvToRows(c).forEach(r=> collMap.set(r.ifc_guid, r.collection_url));
+  csvToRows(m).forEach(r=> iiifMap.set(r.ifc_guid, r.manifest_url));
+
   statusEl.textContent='pronto';
 }
+
+function matchesYear(photo, Y){
+  if(!Y) return true;
+  const y1 = photo.year_start? parseInt(photo.year_start): null;
+  const y2 = photo.year_end? parseInt(photo.year_end): null;
+  if(y1 && y2) return y1<=Y && y2>=Y;
+  if(y1 && !y2) return y1<=Y;
+  if(!y1 && y2) return y2>=Y;
+  return false;
+}
+
 function search(){
   const term = (q.value||'').trim().toLowerCase();
+  const pterm= (phot.value||'').trim().toLowerCase();
+  const y = (year.value||'').trim();
+  const Y = y? parseInt(y): null;
+
   const out=[];
   for(const [guid, entry] of Object.entries(DATA.guids||{})){
     const hay = JSON.stringify(entry).toLowerCase();
-    if(!term || hay.includes(term)){
-      const label = entry.label || entry.name_suggested || '';
-      const nPhotos = (entry.photos||[]).length;
-      out.push({guid, label, nPhotos});
-    }
+    if(term && !hay.includes(term)) continue;
+
+    // filtro fotografo/anno sulle foto (se richiesto)
+    const photos = entry.photos || [];
+    let photoPass = true;
+    if(pterm){ photoPass = photos.some(ph => (ph.photographer||'').toLowerCase().includes(pterm)); }
+    if(photoPass && Y){ photoPass = photos.some(ph => matchesYear(ph, Y)); }
+    if(!photoPass) continue;
+
+    const label = entry.label || entry.name_suggested || '';
+    out.push({ guid, label, nPhotos: photos.length });
   }
+
   out.sort((a,b)=> (b.nPhotos-a.nPhotos) || a.guid.localeCompare(b.guid));
   tbody.innerHTML='';
-  for(const r of out.slice(0,500)){
+  for(const r of out.slice(0,800)){
     const tr=document.createElement('tr');
+    const collURL = collMap.get(r.guid);
+    const iiifURL = iiifMap.get(r.guid);
     tr.innerHTML = `
       <td><code>${r.guid}</code></td>
-      <td>${escapeHtml(r.label)} ${r.nPhotos? `<span class="badge">${r.nPhotos} foto</span>`:''}</td>
+      <td>${esc(r.label)} ${r.nPhotos? `<span class="badge">${r.nPhotos} foto</span>`:''}</td>
       <td>${r.nPhotos}</td>
-      <td>${linkOrDash(collMap.get(r.guid))}</td>
-      <td>${linkOrDash(iiifMap.get(r.guid))}</td>`;
+      <td>${collURL? `<a href="${collURL}" target="_blank" rel="noopener">open</a>`:'—'}</td>
+      <td>${iiifURL? `<a href="${iiifURL}" target="_blank" rel="noopener">open</a>`:'—'}</td>`;
     tbody.appendChild(tr);
   }
   tbl.hidden = out.length===0;
 }
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-function linkOrDash(url){ return url? `<a href="${url}" target="_blank" rel="noopener">open</a>`:'—'; }
 
+btnReset.addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; search(); });
 q.addEventListener('input', search);
+phot.addEventListener('input', search);
+year.addEventListener('input', search);
+
 loadAll().then(search);
 </script>
 </body>
