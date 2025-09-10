@@ -1,0 +1,199 @@
+{
+  "@context": [
+    "https://iiif.io/api/presentation/3/context.json"
+  ],
+  "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4.json",
+  "type": "Manifest",
+  "label": {
+    "en": [
+      "Human_figure"
+    ]
+  },
+  "items": [
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/1",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/1/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/1/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=17KPwYheqfwgfog1wx0Yt4zRvKvDzr4sE",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/1"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4533"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019.0–2019.0"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/2",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/2/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/2/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1oPza02fR8q0Z2sstVYLUTQb_d77qKW4X",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/2"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4534"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019.0–2019.0"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/3",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/3/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/3/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1LOOdIsap5KE8Z1TAVl-Na1ajsIOvNyoI",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/3"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4536 (2)"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019.0–2019.0"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/4",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/4/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/4/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1UoceqkEsHGEMufBAIfY1ZZDTVlo5HCB_",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/4"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4561"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2018.0–2018.0"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/5",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/5/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/5/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1GkjRIh2_N2dFYoth1-3eRowjGJYs5WmE",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/0MHyw0wyD0wvGyXp74Vbj4/canvas/5"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4565"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2018.0–2018.0"
+        ]
+      }
+    }
+  ]
+}
