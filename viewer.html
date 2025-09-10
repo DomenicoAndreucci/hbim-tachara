@@ -65,7 +65,7 @@ let viewer, model, guidToExpress = {};
 async function setupViewer(){
   if(!IfcViewerAPI){ showErr("IfcViewerAPI not available."); return; }
   viewer = new IfcViewerAPI({ container, backgroundColor: new Uint8Array([255,255,255]) });
-  try{ await viewer.IFC.setWasmPath("https://unpkg.com/web-ifc@latest/"); }catch(e){}
+  try{ await viewer.IFC.setWasmPath("./"); }catch(e){}
   viewer.axes.setAxes();
   viewer.grid.setGrid();
 
