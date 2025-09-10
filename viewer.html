@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HBIM Tachara — IFC.js Viewer (import maps)</title>
+<title>HBIM Tachara — IFC.js Viewer (self-host)</title>
 <style>
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;display:grid;grid-template-rows:auto 1fr}
 header{padding:.6rem 1rem;border-bottom:1px solid #ddd;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
@@ -17,14 +17,14 @@ input,button{padding:.45rem .6rem;border:1px solid #bbb;border-radius:.4rem}
 #err{position:absolute;right:10px;top:10px;background:#fee;border:1px solid #f88;color:#900;padding:.6rem;border-radius:.5rem;max-width:520px;display:none;white-space:pre-wrap}
 </style>
 
-<!--  Import map: dice al browser da che URL caricare le dipendenze ESM  -->
+<!-- Import map: tutti i moduli risolti in LOCALE -->
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.module.js",
-    "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/",
-    "web-ifc-three": "https://cdn.jsdelivr.net/npm/web-ifc-three@0.0.152/IFCLoader.js",
-    "web-ifc-viewer": "https://cdn.jsdelivr.net/npm/web-ifc-viewer@1.0.218/dist/index.js"
+    "three": "./libs/three.module.js",
+    "three/examples/jsm/": "./libs/three-examples/jsm/",
+    "web-ifc-three": "./libs/IFCLoader.js",
+    "web-ifc-viewer": "./libs/index.js"
   }
 }
 </script>
@@ -53,10 +53,10 @@ function showErr(msg){ errBox.textContent=msg; errBox.style.display='block'; con
 
 let IfcViewerAPI = null;
 try {
-  const mod = await import('web-ifc-viewer'); // grazie all'import map
+  const mod = await import('web-ifc-viewer'); // risolto dall'import map in ./libs/index.js
   IfcViewerAPI = mod?.IfcViewerAPI || mod?.default || null;
 } catch (e) {
-  showErr("❌ Import fallito: non riesco a caricare 'web-ifc-viewer' dai CDN.\n" + (e?.message||e));
+  showErr("❌ Import fallito del modulo 'web-ifc-viewer' (locale). Verifica /libs/index.js.\n" + (e?.message||e));
 }
 
 const container = document.getElementById('container');
@@ -73,14 +73,12 @@ async function setupViewer(){
   if(!IfcViewerAPI) return;
   try{
     viewer = new IfcViewerAPI({ container, backgroundColor: new Uint8Array([255,255,255]) });
-    // WASM: opzione 1) CDN stabile:
-    await viewer.IFC.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.44/");
-    // Opzione 2) locale: crea /wasm/web-ifc.wasm e usa await viewer.IFC.setWasmPath("./wasm/");
-
+    // WASM locale in /libs/
+    await viewer.IFC.setWasmPath("./libs/");
     viewer.axes.setAxes();
     viewer.grid.setGrid();
   }catch(e){
-    showErr("❌ Inizializzazione IfcViewer fallita.\nErrore: "+(e?.message||e));
+    showErr("❌ Inizializzazione IfcViewer fallita. Verifica /libs/web-ifc.wasm.\n" + (e?.message||e));
   }
 
   // Drag&Drop fallback
@@ -137,7 +135,6 @@ async function loadAll(){
       const hay = JSON.stringify(entry).toLowerCase();
       if(!term || hay.includes(term)) matched.push({guid, entry});
     }
-    const list = document.getElementById('list');
     list.innerHTML = '';
     for(const it of matched.slice(0,200)){
       const label = it.entry.label || it.entry.name_suggested || '';
@@ -149,14 +146,14 @@ async function loadAll(){
       li.appendChild(a);
       list.appendChild(li);
     }
-    document.getElementById('results').hidden = matched.length===0;
+    results.hidden = matched.length===0;
 
     const express = matched.map(m=>guidToExpress[m.guid]).filter(Boolean);
     viewer.IFC.selector.unpickIfcItems();
     if(express.length) viewer.IFC.selector.pickIfcItemsByID(model.modelID, express, true);
   }
 
-  document.getElementById('q').addEventListener('input', search);
+  q.addEventListener('input', search);
   search();
 }
 
@@ -165,3 +162,4 @@ await setupViewer();
 </script>
 </body>
 </html>
+
