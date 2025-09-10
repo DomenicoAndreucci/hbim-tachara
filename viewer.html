@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HBIM Tachara – Ifc.js Viewer (robust)</title>
+<title>HBIM Tachara – Ifc.js Viewer (self-host)</title>
 <style>
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;display:grid;grid-template-rows:auto 1fr}
 header{padding:.6rem 1rem;border-bottom:1px solid #ddd;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
@@ -15,16 +15,15 @@ input,button{padding:.45rem .6rem;border:1px solid #bbb;border-radius:.4rem}
 #results h3{margin:.2rem 0 .4rem 0}
 #results ul{margin:0;padding-left:1rem}
 #results li{margin:.15rem 0}
-code{background:#f3f3f3;padding:0 .25rem;border-radius:.25rem}
-#err{position:absolute;right:10px;top:10px;background:#fee;border:1px solid #f88;color:#900;padding:.6rem;border-radius:.5rem;max-width:420px;display:none}
+#err{position:absolute;right:10px;top:10px;background:#fee;border:1px solid #f88;color:#900;padding:.6rem;border-radius:.5rem;max-width:500px;display:none}
 </style>
 </head>
 <body>
 <header>
   <strong>HBIM Tachara – Ifc.js Viewer</strong>
-  <label>IFC URL: <input id="ifcUrl" size="40" placeholder="tachara_ready.ifc"></label>
-  <label>Data JSON: <input id="jsonUrl" size="40" placeholder="viewer_data.json"></label>
-  <input id="q" size="24" placeholder="Search e.g. Andreucci / 1966 / Door"/>
+  <label>IFC URL: <input id="ifcUrl" size="40" value="tachara_ready.ifc"></label>
+  <label>Data JSON: <input id="jsonUrl" size="40" value="viewer_data.json"></label>
+  <input id="q" size="24" placeholder="Search es. Andreucci / 1966 / Door"/>
   <button id="btnLoad">Load</button>
   <span id="status" class="badge">idle</span>
 </header>
@@ -41,35 +40,33 @@ code{background:#f3f3f3;padding:0 .25rem;border-radius:.25rem}
 const errBox = document.getElementById('err');
 function showErr(msg){ errBox.textContent=msg; errBox.style.display='block'; console.error(msg); }
 
-let IfcViewerAPI;
-try{
-  ({ IfcViewerAPI } = await import("https://cdn.jsdelivr.net/npm/web-ifc-viewer@latest/dist/web-ifc-viewer.es.js"));
-}catch(e1){
-  try{
-    ({ IfcViewerAPI } = await import("https://unpkg.com/web-ifc-viewer@latest/dist/web-ifc-viewer.es.js"));
-  }catch(e2){
-    showErr("Could not load web-ifc-viewer from CDNs. Error: "+(e2?.message||e1?.message));
-  }
-}
+// ✅ IMPORT LOCALE dal file giusto in /libs/
+// Se hai scaricato ifc-viewer-api.js invece di index.js, cambia la riga qui sotto di conseguenza:
+import { IfcViewerAPI } from "./libs/index.js";
 
 const container = document.getElementById('container');
-const statusEl = document.getElementById('status');
-const ifcUrl = document.getElementById('ifcUrl');
-const jsonUrl = document.getElementById('jsonUrl');
-const q = document.getElementById('q');
-const results = document.getElementById('results');
-const list = document.getElementById('list');
+const statusEl  = document.getElementById('status');
+const ifcUrl    = document.getElementById('ifcUrl');
+const jsonUrl   = document.getElementById('jsonUrl');
+const q         = document.getElementById('q');
+const results   = document.getElementById('results');
+const list      = document.getElementById('list');
 
 let viewer, model, guidToExpress = {};
 
 async function setupViewer(){
-  if(!IfcViewerAPI){ showErr("IfcViewerAPI not available."); return; }
-  viewer = new IfcViewerAPI({ container, backgroundColor: new Uint8Array([255,255,255]) });
-  try{ await viewer.IFC.setWasmPath("./"); }catch(e){}
-  viewer.axes.setAxes();
-  viewer.grid.setGrid();
+  try{
+    viewer = new IfcViewerAPI({ container, backgroundColor: new Uint8Array([255,255,255]) });
+    // ✅ WASM locale in /libs/
+    await viewer.IFC.setWasmPath("./libs/");
+    viewer.axes.setAxes();
+    viewer.grid.setGrid();
+  }catch(e){
+    showErr("IfcViewer init failed: "+(e?.message||e));
+    return;
+  }
 
-  // drag&drop fallback
+  // Drag&Drop fallback
   container.addEventListener('dragover', e=>{e.preventDefault();});
   container.addEventListener('drop', async e=>{
     e.preventDefault();
@@ -123,7 +120,7 @@ async function loadAll(){
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.textContent = (label? (label+' – '):'') + it.guid;
-      a.href = `./collections/${it.guid}.html`;
+      a.href = `./collections/${it.guid}.html`;  // ok anche se non usi Collections
       a.target = '_blank';
       li.appendChild(a);
       list.appendChild(li);
@@ -140,9 +137,6 @@ async function loadAll(){
 }
 
 document.getElementById('btnLoad').addEventListener('click', loadAll);
-ifcUrl.value = 'tachara_ready.ifc';
-jsonUrl.value = 'viewer_data.json';
-
 setupViewer();
 </script>
 </body>
