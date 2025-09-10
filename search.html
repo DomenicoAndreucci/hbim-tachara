@@ -6,27 +6,28 @@
 <title>HBIM Tachara — Search (fotografo/anno/testo)</title>
 <style>
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:1rem;line-height:1.45}
-.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-input,select{padding:.5rem .6rem;border:1px solid #bbb;border-radius:.4rem}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem}
+input,button{padding:.5rem .6rem;border:1px solid #bbb;border-radius:.4rem}
 table{border-collapse:collapse;width:100%;margin-top:1rem}
 th,td{border:1px solid #ddd;padding:.5rem;vertical-align:top}
 th{background:#f7f7f7;text-align:left}
 .badge{background:#eee;border-radius:.4rem;padding:.15rem .4rem;margin-left:.3rem;font-size:.9em}
-#status{margin-left:.8rem;color:#666}
+#status{margin-left:.8rem;color:#444}
 small{color:#666}
+.err{color:#900;background:#fee;border:1px solid #f88;padding:.4rem .6rem;border-radius:.4rem;margin-left:.6rem}
 </style>
 </head>
 <body>
 <h1>HBIM Tachara — Search</h1>
 
 <div class="controls">
-  <input id="q" size="32" placeholder="Cerca testo (es. 'Door', 'Cornice', 'Andreucci')">
+  <input id="q" size="28" placeholder="Cerca testo (es. 'Door', 'Cornice', 'Andreucci')">
   <input id="phot" size="18" placeholder="Fotografo (es. Andreucci)">
   <input id="year" size="10" placeholder="Anno (es. 1966)">
   <button id="btnReset">Reset</button>
   <span id="status">carico…</span>
 </div>
-<small>Consiglio: prova una delle tre ricerche, o combinale (sono in AND).</small>
+<small>Puoi combinare: Testo + Fotografo + Anno (filtri in AND). I link si attivano se esistono le pagine/manifest.</small>
 
 <table id="tbl" hidden>
   <thead>
@@ -42,101 +43,136 @@ small{color:#666}
 </table>
 
 <script>
+// ====== Util ======
 const statusEl = document.getElementById('status');
-const q   = document.getElementById('q');
-const phot= document.getElementById('phot');
-const year= document.getElementById('year');
+const qInp   = document.getElementById('q');
+const photInp= document.getElementById('phot');
+const yearInp= document.getElementById('year');
 const btnReset = document.getElementById('btnReset');
 const tbl = document.getElementById('tbl');
 const tbody = tbl.querySelector('tbody');
 
-async function safeFetch(url){
-  try{ const r=await fetch(url); if(!r.ok) throw new Error(r.status); return await r.text(); }
-  catch{ return null; }
+const BASE = (()=>{
+  // base del sito (root del repo)
+  const p = location.pathname.replace(/\/[^\/]*$/, '/'); // …/hbim-tachara/
+  return location.origin + p;
+})();
+
+async function safeFetchText(url){
+  try{
+    const r = await fetch(url, {cache:"no-store"});
+    if(!r.ok) throw new Error(r.status+" "+r.statusText);
+    return await r.text();
+  }catch(e){
+    console.warn("fetch fail:", url, e);
+    return null;
+  }
 }
-function csvToRows(text){
+
+function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+function parseCSV(text){
   if(!text) return [];
-  const lines = text.split(/\r?\n/).filter(Boolean);
-  if(!lines.length) return [];
-  const head = lines.shift().split(',').map(s=>s.trim());
-  return lines.map(line=>{
+  const rows = text.split(/\r?\n/).filter(Boolean);
+  if(!rows.length) return [];
+  const head = rows.shift().split(',').map(s=>s.trim());
+  return rows.map(line=>{
+    // CSV semplice (senza virgole quotate); OK per le nostre mappe
     const cells = line.split(','); const o={};
     head.forEach((h,i)=> o[h]= (cells[i]||'').trim());
     return o;
   });
 }
-function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-
-let DATA=null, collMap=new Map(), iiifMap=new Map();
-
-async function loadAll(){
-  statusEl.textContent='carico dati…';
-  DATA = await fetch('viewer_data.json').then(r=>r.json());
-
-  // 🔴 ora le mappe vengono lette dalla ROOT
-  const c = await safeFetch('collections_map.csv');
-  const m = await safeFetch('manifests_map.csv');
-  csvToRows(c).forEach(r=> collMap.set(r.ifc_guid, r.collection_url));
-  csvToRows(m).forEach(r=> iiifMap.set(r.ifc_guid, r.manifest_url));
-
-  statusEl.textContent='pronto';
-}
 
 function matchesYear(photo, Y){
   if(!Y) return true;
   const y1 = photo.year_start? parseInt(photo.year_start): null;
-  const y2 = photo.year_end? parseInt(photo.year_end): null;
+  const y2 = photo.year_end?   parseInt(photo.year_end):   null;
   if(y1 && y2) return y1<=Y && y2>=Y;
   if(y1 && !y2) return y1<=Y;
   if(!y1 && y2) return y2>=Y;
   return false;
 }
 
+// ====== Data load ======
+let DATA=null, collMap=new Map(), iiifMap=new Map(), counts={};
+
+async function loadAll(){
+  statusEl.textContent = "carico viewer_data.json…";
+  const txt = await safeFetchText('viewer_data.json');
+  if(!txt){
+    statusEl.innerHTML = `<span class="err">viewer_data.json NON trovato</span>`;
+    return;
+  }
+  try{
+    DATA = JSON.parse(txt);
+  }catch(e){
+    statusEl.innerHTML = `<span class="err">viewer_data.json non valido</span>`;
+    return;
+  }
+
+  statusEl.textContent = "carico collections_map.csv…";
+  const collTxt = await safeFetchText('collections_map.csv');
+  if(collTxt){
+    parseCSV(collTxt).forEach(r=>{
+      const g = (r.ifc_guid||r.GUID||r.guid||"").trim();
+      const u = (r.collection_url||r.url||"").trim();
+      if(g && u) collMap.set(g, u);
+    });
+  }
+
+  statusEl.textContent = "carico manifests_map.csv…";
+  const manTxt = await safeFetchText('manifests_map.csv');
+  if(manTxt){
+    parseCSV(manTxt).forEach(r=>{
+      const g = (r.ifc_guid||r.GUID||r.guid||"").trim();
+      const u = (r.manifest_url||r.url||"").trim();
+      if(g && u) iiifMap.set(g, u);
+    });
+  }
+
+  // contatori a schermo per debug
+  counts.guids = Object.keys(DATA.guids||{}).length;
+  counts.collections = collMap.size;
+  counts.manifests   = iiifMap.size;
+
+  statusEl.textContent = `pronto — dati:${counts.guids} | collections_map:${counts.collections} | manifests_map:${counts.manifests}`;
+}
+
+// ====== Search + render ======
+function buildLinkOrGuess(type, guid){
+  // Se ho la mappa → uso quella; altrimenti costruisco il link "di default"
+  if(type==="coll"){
+    const m = collMap.get(guid);
+    return m ? `<a href="${m}" target="_blank" rel="noopener">open</a>`
+             : `<a href="${BASE}collections/${guid}.html" target="_blank" rel="noopener">open?</a>`;
+  }else{
+    const m = iiifMap.get(guid);
+    return m ? `<a href="${m}" target="_blank" rel="noopener">open</a>`
+             : `<a href="${BASE}manifests/${guid}.json" target="_blank" rel="noopener">open?</a>`;
+  }
+}
+
 function search(){
-  const term = (q.value||'').trim().toLowerCase();
-  const pterm= (phot.value||'').trim().toLowerCase();
-  const y = (year.value||'').trim();
+  if(!DATA?.guids){ return; }
+  const term = (qInp.value||'').trim().toLowerCase();
+  const pterm= (photInp.value||'').trim().toLowerCase();
+  const y = (yearInp.value||'').trim();
   const Y = y? parseInt(y): null;
 
   const out=[];
-  for(const [guid, entry] of Object.entries(DATA.guids||{})){
+  for(const [guid, entry] of Object.entries(DATA.guids)){
     const hay = JSON.stringify(entry).toLowerCase();
     if(term && !hay.includes(term)) continue;
 
-    // filtro fotografo/anno sulle foto (se richiesto)
     const photos = entry.photos || [];
-    let photoPass = true;
-    if(pterm){ photoPass = photos.some(ph => (ph.photographer||'').toLowerCase().includes(pterm)); }
-    if(photoPass && Y){ photoPass = photos.some(ph => matchesYear(ph, Y)); }
-    if(!photoPass) continue;
+    let ok = true;
+    if(pterm){ ok = photos.some(ph => (ph.photographer||'').toLowerCase().includes(pterm)); }
+    if(ok && Y){ ok = photos.some(ph => matchesYear(ph, Y)); }
+    if(!ok) continue;
 
     const label = entry.label || entry.name_suggested || '';
     out.push({ guid, label, nPhotos: photos.length });
   }
 
-  out.sort((a,b)=> (b.nPhotos-a.nPhotos) || a.guid.localeCompare(b.guid));
-  tbody.innerHTML='';
-  for(const r of out.slice(0,800)){
-    const tr=document.createElement('tr');
-    const collURL = collMap.get(r.guid);
-    const iiifURL = iiifMap.get(r.guid);
-    tr.innerHTML = `
-      <td><code>${r.guid}</code></td>
-      <td>${esc(r.label)} ${r.nPhotos? `<span class="badge">${r.nPhotos} foto</span>`:''}</td>
-      <td>${r.nPhotos}</td>
-      <td>${collURL? `<a href="${collURL}" target="_blank" rel="noopener">open</a>`:'—'}</td>
-      <td>${iiifURL? `<a href="${iiifURL}" target="_blank" rel="noopener">open</a>`:'—'}</td>`;
-    tbody.appendChild(tr);
-  }
-  tbl.hidden = out.length===0;
-}
-
-btnReset.addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; search(); });
-q.addEventListener('input', search);
-phot.addEventListener('input', search);
-year.addEventListener('input', search);
-
-loadAll().then(search);
-</script>
-</body>
-</html>
+  out.sort((a,b)=> (b.nPhotos-a.nPhotos) || a.guid.localeCo
