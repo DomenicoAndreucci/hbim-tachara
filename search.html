@@ -55,8 +55,6 @@ const q=S('q'), phot=S('phot'), year=S('year'), pid=S('photoid');
 const act={rest:S('act_rest'),exc:S('act_exc'),spa:S('act_spa'),sps:S('act_sps'),reu:S('act_reu'),rel:S('act_rel')};
 
 const esc=s=>(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-const BASE=(location.origin+location.pathname.replace(/\/[^\/]*$/,'/'));
-
 async function getText(url){
   try{const r=await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error(url+" → "+r.status); return await r.text();}
   catch(e){return {__err:e.message||String(e)};}
@@ -66,16 +64,15 @@ function matchesYear(ph,Y){if(!Y)return true; const y1=ph.year_start?parseInt(ph
   if(y1&&y2) return y1<=Y&&y2>=Y; if(y1&&!y2) return y1<=Y; if(!y1&&y2) return y2>=Y; return false;}
 
 let DATA=null, collMap=new Map(), iiifMap=new Map();
+
 function showDiag(msg){diag.style.display='block'; diag.textContent=msg;}
 
 async function loadAll(){
-  // prova full poi base
   let j = await getText('viewer_data_full.json');
   if(j.__err){ j = await getText('viewer_data.json'); }
   if(j.__err){ showDiag("Manca il JSON in root.\nCarica almeno uno tra:\n• viewer_data_full.json\n• viewer_data.json\nDettaglio: "+j.__err); return; }
   try{ DATA = JSON.parse(j); }catch(e){ showDiag("viewer_data(_full).json non è JSON valido."); return; }
 
-  // mappe (se non ci sono, ok lo stesso)
   const c = await getText('collections_map.csv');
   const m = await getText('manifests_map.csv');
   if(!c.__err){ parseCSV(c).forEach(r=> collMap.set((r.ifc_guid||'').trim(), (r.collection_url||'').trim())); }
@@ -88,8 +85,8 @@ function filterAct(entry){
   const a=entry.activities||{};
   if(act.rest.checked && !a.restoration) return false;
   if(act.exc.checked  && !a.excavation)  return false;
-  if(act.spa.checked  && !a.spolia tion_attempt) return false;
-  if(act.sps.checked  && !a.spolia tion_success) return false;
+  if(act.spa.checked  && !a.spoliation_attempt) return false;   // ✅ corretto
+  if(act.sps.checked  && !a.spoliation_success) return false;   // ✅ corretto
   if(act.reu.checked  && !(a.reused_at||a.reused_coords)) return false;
   if(act.rel.checked  && !(a.relocated_back_year||a.relocated_by)) return false;
   return true;
@@ -115,9 +112,10 @@ function render(rows){
 }
 
 function search(){
-  if(!DATA?.guids){ return; }
-  // Photo ID prioritaria
-  const pid = (pid.value||'').trim();
+  if(!DATA?.guids) return;
+
+  // Priority: Photo ID
+  const pid = (document.getElementById('photoid').value||'').trim();
   if(pid && DATA.photo_index && DATA.photo_index[pid]){
     render(DATA.photo_index[pid].map(g=>({guid:g, entry:DATA.guids[g]})));
     return;
@@ -132,20 +130,23 @@ function search(){
     const hay = JSON.stringify(entry).toLowerCase();
     if(term && !hay.includes(term)) continue;
     if(!filterAct(entry)) continue;
+
     const photos=entry.photos||[];
     let ok=true;
     if(pterm) ok = photos.some(ph => (ph.photographer||'').toLowerCase().includes(pterm));
     if(ok && Y) ok = photos.some(ph => matchesYear(ph,Y));
     if(!ok) continue;
+
     rows.push({guid,entry});
   }
   render(rows);
 }
 
 document.getElementById('btnReset').addEventListener('click', ()=>{
-  q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search();
+  q.value=''; phot.value=''; year.value=''; document.getElementById('photoid').value='';
+  Object.values(act).forEach(x=>x.checked=false); search();
 });
-[q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
+[q,phot,year,document.getElementById('photoid'),...Object.values(act)].forEach(el=> el.addEventListener('input', search));
 
 loadAll().then(search);
 </script>
