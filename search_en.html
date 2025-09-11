@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HBIM Tachara — Search</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:1rem;line-height:1.45}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem}
+input,button{padding:.45rem .6rem;border:1px solid #bbb;border-radius:.4rem}
+fieldset{border:1px solid #ddd;border-radius:.4rem;padding:.4rem .6rem}
+legend{font-size:.9em;color:#444}
+table{border-collapse:collapse;width:100%;margin-top:1rem}
+th,td{border:1px solid #ddd;padding:.5rem;vertical-align:top}
+th{background:#f7f7f7;text-align:left}
+.badge{background:#eee;border-radius:.4rem;padding:.15rem .4rem;margin-left:.4rem;font-size:.9em}
+#status{margin-left:.8rem;color:#444}
+.err{color:#900;background:#fee;border:1px solid #f88;padding:.35rem .6rem;border-radius:.4rem;white-space:pre-wrap}
+small{color:#666}
+</style>
+</head>
+<body>
+<h1>HBIM Tachara — Search</h1>
+
+<div class="controls">
+  <input id="q" size="26" placeholder="Free text (label/name/photo)">
+  <input id="phot" size="16" placeholder="Photographer (e.g. Andreucci)">
+  <input id="year" size="8" placeholder="Year (e.g. 1966)">
+  <input id="photoid" size="14" placeholder="Photo ID (priority)">
+  <fieldset>
+    <legend>Activities</legend>
+    <label><input type="checkbox" id="act_rest"> Restoration</label>
+    <label><input type="checkbox" id="act_exc"> Excavation</label>
+    <label><input type="checkbox" id="act_spa"> Spoliation attempt</label>
+    <label><input type="checkbox" id="act_sps"> Spoliation success</label>
+    <label><input type="checkbox" id="act_reu"> Reuse</label>
+    <label><input type="checkbox" id="act_rel"> Relocation</label>
+  </fieldset>
+  <button id="btnReset">Reset</button>
+  <button id="btnExport">Export CSV</button>
+  <span id="status">loading…</span>
+</div>
+<div id="diag" class="err" style="display:none"></div>
+
+<table id="tbl" hidden>
+  <thead><tr><th>GUID</th><th>Label / Name</th><th>Photos (#)</th><th>Collections</th><th>IIIF</th></tr></thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const S = id=>document.getElementById(id);
+const statusEl=S('status'), diag=S('diag'), tbl=S('tbl'), tbody=tbl.querySelector('tbody');
+const q=S('q'), phot=S('phot'), year=S('year'), pid=S('photoid');
+const act={rest:S('act_rest'),exc:S('act_exc'),spa:S('act_spa'),sps:S('act_sps'),reu:S('act_reu'),rel:S('act_rel')};
+
+function showDiag(msg){diag.style.display='block'; diag.textContent=msg;}
+function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+async function getText(url){
+  try{ const r=await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error(url+" → "+r.status); return await r.text(); }
+  catch(e){ return {__err:e.message||String(e)}; }
+}
+function parseCSV(t){if(!t||t.__err)return[];const a=t.split(/\r?\n/).filter(Boolean);if(!a.length)return[];const h=a.shift().split(',').map(s=>s.trim());return a.map(line=>{const c=line.split(',');const o={};h.forEach((k,i)=>o[k]=(c[i]||'').trim());return o;});}
+function matchesYear(ph,Y){
+  if(!Y) return true;
+  function ny(v){ if(v===null||v===undefined||v==="") return ""; const x=parseInt(parseFloat(String(v))); return isNaN(x)? "": x; }
+  const y1 = ny(ph.year_start), y2 = ny(ph.year_end);
+  if(y1&&y2) return y1<=Y && y2>=Y;
+  if(y1&&!y2) return y1<=Y;
+  if(!y1&&y2) return y2>=Y;
+  return false;
+}
+
+let DATA=null, collMap=new Map(), iiifMap=new Map(), lastRows=[];
+
+async function loadAll(){
+  let txt = await getText('viewer_data_full.json');
+  if(txt.__err){ txt = await getText('viewer_data.json'); }
+  if(txt.__err){ showDiag("Missing viewer_data_full.json (or viewer_data.json) in repo root. "+txt.__err); return; }
+  try{ DATA = JSON.parse(txt); }catch(e){ showDiag("Invalid JSON in viewer_data_full.json"); return; }
+
+  const c = await getText('collections_map.csv');
+  const m = await getText('manifests_map.csv');
+  parseCSV(c).forEach(r=> collMap.set((r.ifc_guid||'').trim(), (r.collection_url||'').trim()));
+  parseCSV(m).forEach(r=> iiifMap.set((r.ifc_guid||'').trim(), (r.manifest_url||'').trim()));
+
+  statusEl.textContent=`ready — guids:${Object.keys(DATA.guids||{}).length} | photo_index:${Object.keys(DATA.photo_index||{}).length} | collections_map:${collMap.size} | manifests_map:${iiifMap.size}`;
+}
+function filterActivities(entry){
+  const a=entry.activities||{};
+  if(act.rest.checked && !a.restoration) return false;
+  if(act.exc.checked  && !a.excavation)  return false;
+  if(act.spa.checked  && !a.spoliation_attempt) return false;
+  if(act.sps.checked  && !a.spoliation_success) return false;
+  if(act.reu.checked  && !(a.reused_at||a.reused_coords)) return false;
+  if(act.rel.checked  && !(a.relocated_back_year||a.relocated_by)) return false;
+  return true;
+}
+function linkOrGuess(map,g,sub){
+  const u = map.get(g) || (`${sub}/${g}.${sub==='collections'?'html':'json'}`);
+  return `<a href="${u}" target="_blank" rel="noopener">open</a>`;
+}
+function render(rows){
+  lastRows = rows.slice();
+  rows.sort((A,B)=> ((B.entry.photos||[]).length - (A.entry.photos||[]).length) || A.guid.localeCompare(B.guid));
+  tbody.innerHTML='';
+  for (const {guid,entry} of rows.slice(0,1000)){
+    const n=(entry.photos||[]).length, label=entry.label||entry.name_suggested||'';
+    const coll=linkOrGuess(collMap,guid,'collections');
+    const iiif=linkOrGuess(iiifMap,guid,'manifests');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><code>${guid}</code></td><td>${esc(label)} ${n?`<span class="badge">${n} photos</span>`:''}</td><td>${n}</td><td>${coll}</td><td>${iiif}</td>`;
+    tbody.appendChild(tr);
+  }
+  tbl.hidden = rows.length===0;
+}
+function search(){
+  if(!DATA?.guids) return;
+
+  // PhotoID priority (robust: scan photos even if index missing)
+  const pidVal = (S('photoid').value||'').trim();
+  if(pidVal){
+    const rows=[];
+    if (DATA.photo_index && DATA.photo_index[pidVal]) {
+      for (const g of DATA.photo_index[pidVal]) rows.push({guid:g, entry:DATA.guids[g]});
+    } else {
+      for (const [guid,entry] of Object.entries(DATA.guids)){
+        const photos=entry.photos||[];
+        if(photos.some(ph => (ph.photo_id||'')===pidVal)){
+          rows.push({guid,entry});
+        }
+      }
+    }
+    render(rows); return;
+  }
+
+  const term=(q.value||'').toLowerCase().trim();
+  const pterm=(phot.value||'').toLowerCase().trim();
+  const Ytxt=(year.value||'').trim(); const Y=Ytxt?parseInt(Ytxt): null;
+
+  const rows=[];
+  for(const [guid,entry] of Object.entries(DATA.guids)){
+    const hay = JSON.stringify(entry).toLowerCase();
+    if(term && !hay.includes(term)) continue;
+    if(!filterActivities(entry)) continue;
+
+    const photos=entry.photos||[];
+    let ok=true;
+    if(pterm) ok = photos.some(ph => (ph.photographer||'').toLowerCase().includes(pterm));
+    if(ok && Y) ok = photos.some(ph => matchesYear(ph, Y));
+    if(!ok) continue;
+
+    rows.push({guid,entry});
+  }
+  render(rows);
+}
+S('btnReset').addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search(); });
+[q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
+
+// Export CSV of current results
+S('btnExport').addEventListener('click', ()=>{
+  if(!lastRows.length){ alert("No results to export."); return; }
+  const lines = ["GUID,Label,Photos,Collections,IIIF"];
+  for (const {guid,entry} of lastRows){
+    const n=(entry.photos||[]).length;
+    const label=(entry.label||entry.name_suggested||'').replace(/"/g,'""');
+    const coll=( ( (collMap.get(guid)||`collections/${guid}.html`) ) );
+    const iiif=( ( (iiifMap.get(guid)||`manifests/${guid}.json`) ) );
+    lines.push(`${guid},"${label}",${n},${coll},${iiif}`);
+  }
+  const blob = new Blob([lines.join("\n")], {type:"text/csv"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="search_results.csv";
+  a.click();
+});
+
+// Boot
+loadAll().then(search);
+</script>
+</body>
+</html>
