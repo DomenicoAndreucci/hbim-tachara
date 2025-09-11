@@ -5,7 +5,7 @@ This repository contains the Tachara (Persepolis) HBIM materials.
 ## How to use
 
 ### Search (images & GUIDs)
-Open the search page (with cache-buster): https://domenicoandreucci.github.io/hbim-tachara/search.html?v=2
+Open the search page (with cache-buster): https://domenicoandreucci.github.io/hbim-tachara/search.html?v=20
 
 You can search by:
 - **Free text** (label, name, photographer, owner, year, photo_id, description if present)
