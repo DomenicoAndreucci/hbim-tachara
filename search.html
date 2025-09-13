@@ -46,8 +46,8 @@ small{color:#666}
 <table id="tbl" hidden>
   <thead><tr>
     <th>GUID</th>
-    <th>Ensemble element</th>  <!-- = name_suggested (e.g., Door P4) -->
-    <th>Label</th>              <!-- = label (e.g., Doorjamb) -->
+    <th>Ensemble element</th>  <!-- cleaned name_suggested -->
+    <th>Label</th>
     <th>Photos (#)</th>
     <th>Collections</th>
     <th>IIIF</th>
@@ -63,6 +63,7 @@ const act={rest:S('act_rest'),exc:S('act_exc'),spa:S('act_spa'),sps:S('act_sps')
 
 function showDiag(msg){diag.style.display='block'; diag.textContent=msg;}
 function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+function escapeRegExp(str){ return (str||'').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
 async function getText(url){
   try{ const r=await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error(url+" → "+r.status); return await r.text(); }
@@ -94,6 +95,7 @@ async function loadAll(){
 
   statusEl.textContent=`ready — guids:${Object.keys(DATA.guids||{}).length} | photo_index:${Object.keys(DATA.photo_index||{}).length} | collections_map:${collMap.size} | manifests_map:${iiifMap.size}`;
 }
+
 function filterActivities(entry){
   const a=entry.activities||{};
   if(act.rest.checked && !a.restoration) return false;
@@ -109,14 +111,23 @@ function linkOrGuess(map,g,sub){
   return `<a href="${u}" target="_blank" rel="noopener">open</a>`;
 }
 
+// Remove leading "label — " or "label - " from name_suggested when it redundantly includes the label
+function cleanNameSuggested(nameSuggested, label){
+  const ns = nameSuggested || "";
+  const lab = label || "";
+  if(!ns || !lab) return ns;
+  const re = new RegExp("^\\s*" + escapeRegExp(lab) + "\\s*[—-]\\s*", "i");
+  return ns.replace(re, "");
+}
+
 function render(rows){
   lastRows = rows.slice();
   rows.sort((A,B)=> ((B.entry.photos||[]).length - (A.entry.photos||[]).length) || A.guid.localeCompare(B.guid));
   tbody.innerHTML='';
   for (const {guid,entry} of rows.slice(0,1000)){
     const n    = (entry.photos||[]).length;
-    const elem = entry.name_suggested || "";   // Ensemble element = name_suggested
-    const lab  = entry.label || "";            // Label = label
+    const elem = cleanNameSuggested(entry.name_suggested, entry.label);  // Ensemble element
+    const lab  = entry.label || "";
 
     const coll=linkOrGuess(collMap,guid,'collections');
     const iiif=linkOrGuess(iiifMap,guid,'manifests');
@@ -180,7 +191,7 @@ S('btnExport').addEventListener('click', ()=>{
   const lines = ["GUID,Ensemble element,Label,Photos,Collections,IIIF"];
   for (const {guid,entry} of lastRows){
     const n    = (entry.photos||[]).length;
-    const elem = (entry.name_suggested||"").replace(/"/g,'""');
+    const elem = cleanNameSuggested(entry.name_suggested, entry.label).replace(/"/g,'""');
     const lab  = (entry.label||"").replace(/"/g,'""');
     const coll = (collMap.get(guid)||`collections/${guid}.html`);
     const iiif = (iiifMap.get(guid)||`manifests/${guid}.json`);
