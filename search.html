@@ -14,6 +14,7 @@ th,td{border:1px solid #ddd;padding:.5rem;vertical-align:top}
 th{background:#f7f7f7;text-align:left}
 .badge{background:#eee;border-radius:.4rem;padding:.15rem .4rem;margin-left:.4rem;font-size:.9em}
 #status{margin-left:.8rem;color:#444}
+#found{margin-left:.8rem;color:#444}  /* <- found counter */
 .err{color:#900;background:#fee;border:1px solid #f88;padding:.35rem .6rem;border-radius:.4rem;white-space:pre-wrap}
 small{color:#666}
 </style>
@@ -38,6 +39,7 @@ small{color:#666}
   <button id="btnReset">Reset</button>
   <button id="btnExport">Export CSV</button>
   <span id="status">loading…</span>
+  <span id="found"></span> <!-- <- found counter -->
 </div>
 <div id="diag" class="err" style="display:none"></div>
 
@@ -113,7 +115,7 @@ function render(rows){
   tbody.innerHTML='';
   for (const {guid,entry} of rows.slice(0,1000)){
     const n    = (entry.photos||[]).length;
-    const elem = entry.name_suggested || "";   // Element = name_suggested (tipo — ID)
+    const elem = entry.name_suggested || "";   // Element = name_suggested (type — ID)
     const lab  = entry.label || "";            // Label   = label
 
     const coll=linkOrGuess(collMap,guid,'collections');
@@ -129,6 +131,9 @@ function render(rows){
     tbody.appendChild(tr);
   }
   tbl.hidden = rows.length===0;
+
+  // <-- update found counter
+  S('found').textContent = `found: ${rows.length}`;
 }
 
 function search(){
@@ -171,7 +176,7 @@ function search(){
 S('btnReset').addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search(); });
 [q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
 
-// Export CSV (Element = name_suggested, Label = label) — FIXED QUOTES
+// Export CSV (Element = name_suggested, Label = label)
 S('btnExport').addEventListener('click', ()=>{
   if(!lastRows.length){ alert("No results to export."); return; }
   const lines = ["GUID,Element,Label,Photos,Collections,IIIF"];
