@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <html lang="en">
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -61,6 +61,10 @@ const statusEl=S('status'), diag=S('diag'), tbl=S('tbl'), tbody=tbl.querySelecto
 const q=S('q'), phot=S('phot'), year=S('year'), pid=S('photoid');
 const act={rest:S('act_rest'),exc:S('act_exc'),spa:S('act_spa'),sps:S('act_sps'),reu:S('act_reu'),rel:S('act_rel')};
 
+// ---- Mirador integration & options ----
+const MIRADOR_PAGE = "./mirador.html";   // viewer page
+const SHOW_MANIFEST_LINK = false;        // set true to also show raw JSON link
+
 function showDiag(msg){diag.style.display='block'; diag.textContent=msg;}
 function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 function escapeRegExp(str){ return (str||'').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
@@ -106,9 +110,16 @@ function filterActivities(entry){
   if(act.rel.checked  && !(a.relocated_back_year||a.relocated_by)) return false;
   return true;
 }
-function linkOrGuess(map,g,sub){
-  const u = map.get(g) || (`${sub}/${g}.${sub==='collections'?'html':'json'}`);
-  return `<a href="${u}" target="_blank" rel="noopener">open</a>`;
+
+// Collections: keep "open"; IIIF: show "Mirador" (optionally manifest)
+function linkOrGuess(map,guid,sub){
+  const url = map.get(guid) || (`${sub}/${guid}.${sub==='collections'?'html':'json'}`);
+  if (sub === "manifests") {
+    const mir = `${MIRADOR_PAGE}?manifest=${encodeURIComponent(url)}`;
+    const jsonLink = SHOW_MANIFEST_LINK ? ` &nbsp;<a href="${url}" target="_blank" rel="noopener" title="IIIF manifest JSON">manifest</a>` : "";
+    return `<a href="${mir}" target="_blank" rel="noopener">Mirador</a>${jsonLink}`;
+  }
+  return `<a href="${url}" target="_blank" rel="noopener">open</a>`;
 }
 
 // Remove leading "label — " or "label - " from name_suggested when it redundantly includes the label
@@ -182,6 +193,7 @@ function search(){
   }
   render(rows);
 }
+
 S('btnReset').addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search(); });
 [q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
 
