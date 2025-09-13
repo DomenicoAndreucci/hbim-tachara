@@ -41,10 +41,14 @@ small{color:#666}
 </div>
 <div id="diag" class="err" style="display:none"></div>
 
-<!-- NOTE: added an 'Element' column in the header -->
 <table id="tbl" hidden>
   <thead><tr>
-    <th>GUID</th><th>Element</th><th>Label / Name</th><th>Photos (#)</th><th>Collections</th><th>IIIF</th>
+    <th>GUID</th>
+    <th>Element</th>       <!-- = name_suggested -->
+    <th>Label</th>         <!-- = label -->
+    <th>Photos (#)</th>
+    <th>Collections</th>
+    <th>IIIF</th>
   </tr></thead>
   <tbody></tbody>
 </table>
@@ -102,24 +106,23 @@ function linkOrGuess(map,g,sub){
   const u = map.get(g) || (`${sub}/${g}.${sub==='collections'?'html':'json'}`);
   return `<a href="${u}" target="_blank" rel="noopener">open</a>`;
 }
+
 function render(rows){
   lastRows = rows.slice();
   rows.sort((A,B)=> ((B.entry.photos||[]).length - (A.entry.photos||[]).length) || A.guid.localeCompare(B.guid));
   tbody.innerHTML='';
   for (const {guid,entry} of rows.slice(0,1000)){
-    const n=(entry.photos||[]).length;
-    const rawLabel = entry.label || "";
-    const rawName  = entry.name_suggested || "";
-    const niceName = rawLabel && rawName ? `${rawLabel} — ${rawName}` : (rawLabel || rawName || "");
+    const n    = (entry.photos||[]).length;
+    const elem = entry.name_suggested || "";   // Element = name_suggested (tipo — ID)
+    const lab  = entry.label || "";            // Label   = label
 
     const coll=linkOrGuess(collMap,guid,'collections');
     const iiif=linkOrGuess(iiifMap,guid,'manifests');
 
-    // NOTE: added the Element cell (niceName) right after GUID
     const tr=document.createElement('tr');
     tr.innerHTML=`<td><code>${guid}</code></td>
-                  <td>${esc(niceName)}</td>
-                  <td>${esc(rawLabel || rawName || '')} ${n?`<span class="badge">${n} photos</span>`:''}</td>
+                  <td>${esc(elem)}</td>
+                  <td>${esc(lab)} ${n?`<span class="badge">${n} photos</span>`:''}</td>
                   <td>${n}</td>
                   <td>${coll}</td>
                   <td>${iiif}</td>`;
@@ -127,10 +130,11 @@ function render(rows){
   }
   tbl.hidden = rows.length===0;
 }
+
 function search(){
   if(!DATA?.guids) return;
 
-  // PhotoID priority (robust: scan photos even if index missing)
+  // PhotoID priority (robust)
   const pidVal = (S('photoid').value||'').trim();
   if(pidVal){
     const rows=[];
@@ -138,18 +142,15 @@ function search(){
       for (const g of DATA.photo_index[pidVal]) rows.push({guid:g, entry:DATA.guids[g]});
     } else {
       for (const [guid,entry] of Object.entries(DATA.guids)){
-        const photos=entry.photos||[];
-        if(photos.some(ph => (ph.photo_id||'')===pidVal)){
-          rows.push({guid,entry});
-        }
+        if ((entry.photos||[]).some(ph => (ph.photo_id||'')===pidVal)) rows.push({guid,entry});
       }
     }
     render(rows); return;
   }
 
-  const term=(q.value||'').toLowerCase().trim();
+  const term =(q.value||'').toLowerCase().trim();
   const pterm=(phot.value||'').toLowerCase().trim();
-  const Ytxt=(year.value||'').trim(); const Y=Ytxt?parseInt(Ytxt): null;
+  const Ytxt =(year.value||'').trim(); const Y=Ytxt?parseInt(Ytxt): null;
 
   const rows=[];
   for(const [guid,entry] of Object.entries(DATA.guids)){
@@ -170,19 +171,17 @@ function search(){
 S('btnReset').addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search(); });
 [q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
 
-// Export CSV of current results (now includes Element column)
+// Export CSV (Element = name_suggested, Label = label)
 S('btnExport').addEventListener('click', ()=>{
   if(!lastRows.length){ alert("No results to export."); return; }
   const lines = ["GUID,Element,Label,Photos,Collections,IIIF"];
   for (const {guid,entry} of lastRows){
-    const n=(entry.photos||[]).length;
-    const rawLabel = entry.label || "";
-    const rawName  = entry.name_suggested || "";
-    const niceName = rawLabel && rawName ? `${rawLabel} — ${rawName}` : (rawLabel || rawName || "");
-    const labelCSV = (rawLabel || rawName || "").replace(/"/g,'""');
+    const n    = (entry.photos||[]).length;
+    const elem = (entry.name_suggested||"").replace(/"/g,'""');
+    const lab  = (entry.label||"").replace(/"/g,'"'"");
     const coll = (collMap.get(guid)||`collections/${guid}.html`);
     const iiif = (iiifMap.get(guid)||`manifests/${guid}.json`);
-    lines.push(`${guid},"${niceName.replace(/"/g,'""')}","${labelCSV}",${n},${coll},${iiif}`);
+    lines.push(`${guid},"${elem}","${lab}",${n},${coll},${iiif}`);
   }
   const blob = new Blob([lines.join("\n")], {type:"text/csv"});
   const a=document.createElement("a");
