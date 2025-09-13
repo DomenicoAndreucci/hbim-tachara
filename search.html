@@ -171,14 +171,14 @@ function search(){
 S('btnReset').addEventListener('click', ()=>{ q.value=''; phot.value=''; year.value=''; pid.value=''; Object.values(act).forEach(x=>x.checked=false); search(); });
 [q,phot,year,pid,...Object.values(act)].forEach(el=> el.addEventListener('input', search));
 
-// Export CSV (Element = name_suggested, Label = label)
+// Export CSV (Element = name_suggested, Label = label) — FIXED QUOTES
 S('btnExport').addEventListener('click', ()=>{
   if(!lastRows.length){ alert("No results to export."); return; }
   const lines = ["GUID,Element,Label,Photos,Collections,IIIF"];
   for (const {guid,entry} of lastRows){
     const n    = (entry.photos||[]).length;
     const elem = (entry.name_suggested||"").replace(/"/g,'""');
-    const lab  = (entry.label||"").replace(/"/g,'"'"");
+    const lab  = (entry.label||"").replace(/"/g,'""');
     const coll = (collMap.get(guid)||`collections/${guid}.html`);
     const iiif = (iiifMap.get(guid)||`manifests/${guid}.json`);
     lines.push(`${guid},"${elem}","${lab}",${n},${coll},${iiif}`);
