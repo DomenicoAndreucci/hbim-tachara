@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Mirador – HBIM Tachara</title>
+<link rel="stylesheet" href="https://unpkg.com/mirador@latest/dist/mirador.min.css">
+<style>
+  html,body,#mirador{height:100%;margin:0}
+</style>
+</head>
+<body>
+<div id="mirador"></div>
+
+<script src="https://unpkg.com/mirador@latest/dist/mirador.min.js"></script>
+<script>
+  function getParam(name){
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+  const manifestUrl = getParam('manifest') || '';
+  const cfg = {
+    id: 'mirador',
+    windows: manifestUrl ? [{
+      loadedManifest: manifestUrl,
+      canvasIndex: 0
+    }] : [],
+    workspace: { isWorkspaceAddVisible: true }
+  };
+  Mirador.viewer(cfg);
+</script>
+</body>
+</html>
