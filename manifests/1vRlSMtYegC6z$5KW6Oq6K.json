@@ -1,0 +1,384 @@
+{
+  "@context": [
+    "https://iiif.io/api/presentation/3/context.json"
+  ],
+  "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K.json",
+  "type": "Manifest",
+  "label": {
+    "en": [
+      "Window_jamb"
+    ]
+  },
+  "items": [
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/1",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/1/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/1/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1-HuqdY4PrhdIDBCxSeZ9QwWhjF1aCLvX",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/1"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4574"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019–2019"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/2",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/2/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/2/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1-GaksLyz8eJlbdRl9MZekoV5LOGIbUJW",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/2"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "11908_07"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/3",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/3/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/3/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1Orrm7Hs1xJXl9rJmgPmY-V_riyqAtjVc",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/3"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "222"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 2000–2000"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/4",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/4/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/4/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1_UIyWApRJlGMTKGYZivSX3xp9SZChJ3N",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/4"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "8_11"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/5",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/5/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/5/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=14JYHnYDiLTHBlgm3xYF90IhoqxF82J2v",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/5"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4570 (2)"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019–2019"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/6",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/6/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/6/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1Lu2dzE4KDswETOT7422eitmGLgRSBm_D",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/6"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "IMG_4575"
+        ]
+      },
+      "summary": {
+        "en": [
+          "D. Andreucci | Andreucci | 2019–2019"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/7",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/7/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/7/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1ZPn6gQtEqW-OQMY3iSpjrCkpYB1UuZog",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/7"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "MPL 003.0.401 - Persépolis - M0831_scan11-0009"
+        ]
+      },
+      "summary": {
+        "en": [
+          "P. Loti | Musées-municipaux Rochefort | 1900–1900"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/8",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/8/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/8/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1zsJpIU17tRee7ntQkDfCGNmZeEH_SZ12",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/8"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "MPL 003.0.403 - Persépolis - M0831_scan11-0011"
+        ]
+      },
+      "summary": {
+        "en": [
+          "P. Loti | Musées-municipaux Rochefort | 1900–1900"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/9",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/9/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/9/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=10SRKXBXeKl8BGbPmlnoWYQNvVpfqaQCX",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/9"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "MPL 003.0.404 - Persépolis - M0831_scan11-0012"
+        ]
+      },
+      "summary": {
+        "en": [
+          "P. Loti | Musées-municipaux Rochefort | 1900–1900"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/10",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/10/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/10/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1dP08uUYnwCbGBFB93QBiIr79oPXmNULD",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/1vRlSMtYegC6z$5KW6Oq6K/canvas/10"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "MPL 003.0.407 - Persépolis - M0831_scan11-0015"
+        ]
+      },
+      "summary": {
+        "en": [
+          "P. Loti | Musées-municipaux Rochefort | 1900–1900"
+        ]
+      }
+    }
+  ]
+}
