@@ -1,0 +1,236 @@
+{
+  "@context": [
+    "https://iiif.io/api/presentation/3/context.json"
+  ],
+  "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3.json",
+  "type": "Manifest",
+  "label": {
+    "en": [
+      "Cornice"
+    ]
+  },
+  "items": [
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/1",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/1/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/1/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1q_DAr6x28ZgRyAkDljUqPGbK1sMv4y4U",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/1"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "10486_14"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/2",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/2/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/2/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1X7sG51m1cmdy3JjITg5VivNoZSsMQlEN",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/2"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "12132_08"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/3",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/3/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/3/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1Pe5qJMfMQj-KwXcHzkbR3kAfwOy8aVFR",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/3"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "13_10"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/4",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/4/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/4/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1qtoJJZyJbvztw7FNfGpML7nybIhjWp1J",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/4"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "2_21"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1966–1971"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/5",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/5/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/5/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=10fBhLa639q5sDUrhof1ZOlOuaQt1dH_Q",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/5"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "3190-2"
+        ]
+      },
+      "summary": {
+        "en": [
+          "G. Tilia | ISMEO | 1964–1965"
+        ]
+      }
+    },
+    {
+      "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/6",
+      "type": "Canvas",
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/6/page/1",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/6/page/1/annotation/painting",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://drive.google.com/uc?export=view&id=1nolmkbWuCkL9poU_7aZE0vzEAwT0sjhU",
+                "type": "Image",
+                "format": "image/jpeg",
+                "width": 1000,
+                "height": 1000
+              },
+              "target": "https://domenicoandreucci.github.io/hbim-tachara/manifests/3GqY22Cvj7seEN$6klgci3/canvas/6"
+            }
+          ]
+        }
+      ],
+      "label": {
+        "en": [
+          "FS-FSA_A.4_2.12.GN.29.03"
+        ]
+      },
+      "summary": {
+        "en": [
+          "A. Sevruguin | Freer Gallery of Art and Arthur M. Sackler Gallery Archives | 1902–1905"
+        ]
+      }
+    }
+  ]
+}
