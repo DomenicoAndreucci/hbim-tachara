@@ -1,0 +1,62 @@
+# Tachara HBIM – Integrating Historical Photographs into the 3D Model
+
+This project connects historical and modern photographs of the Palace of Darius (Tachara) at Persepolis with a digital 3D model in HBIM format (Historic Building Information Modelling).  
+The aim is to demonstrate how photographic sources can be linked to an information model, enabling:
+
+- Diachronic consultation of the same architectural element across different years;  
+- Documentation of restorations and transformations that occurred over time;  
+- The creation of an integrated research and access environment for archaeologists, conservators, restorers, and art historians.  
+
+---
+
+## How to Explore
+
+- **Integrated search** (by year, photographer, type of element):  
+  [Open the search interface](https://domenicoandreucci.github.io/hbim-tachara/search.html?v=20)  
+
+- **Photo galleries by element**:  
+  [Open a sample gallery](https://domenicoandreucci.github.io/hbim-tachara/collections/28bUwV09TEPxTsAjz_1GHW.html)  
+
+- **Mirador viewer (IIIF)**:  
+  [Open in Mirador](https://domenicoandreucci.github.io/hbim-tachara/mirador.html?manifest=https://domenicoandreucci.github.io/hbim-tachara/manifests/3AYKLOZbWgPaJV8vUibT7e.json)  
+  *Note: in this proof-of-concept, Mirador is used only on a public subset of images, as a test of IIIF interoperability and open data dissemination.*  
+
+- **3D Model (enriched IFC)**:  
+  [Download the IFC](https://domenicoandreucci.github.io/hbim-tachara/tachara_links_v3_clean.ifc)  
+  Can be opened with free software such as [BlenderBIM](https://blenderbim.org/) (add-on for Blender),  
+  [Solibri Anywhere](https://www.solibri.com/products/anywhere), or online with [Flinker](https://viewer.flinker.app/) and [SortDesk](https://viewer.sortdesk.com/).  
+
+---
+
+## Key Features
+
+- Browse all photographs associated with each architectural element of the palace.  
+- Filter images by year of capture or photographer/author.  
+- Analyse elements based on documented activities (excavation, restoration, spoliation, reuse, museum relocation).  
+- Access a subset of photographs via Mirador (IIIF), aligned with international standards for image sharing and open access.  
+- Explore the 3D model in IFC format and open the linked documents directly.  
+
+---
+
+## Useful Software
+
+- **3D Model (IFC)**:  
+  - [BlenderBIM](https://blenderbim.org/) (open source, Blender add-on)  
+  - [Solibri Anywhere](https://www.solibri.com/products/anywhere)  
+  - Online viewers: [Flinker](https://viewer.flinker.app/) and [SortDesk](https://viewer.sortdesk.com/)  
+
+- **BCF files (views)**:  
+  - Open `Diacronic_View_P10.bcf` with [BIMcollab Zoom](https://www.bimcollab.com/en/zoom)  
+  - Or online with [Flinker Viewer](https://viewer.flinker.app/).  
+
+- **SQLite database (hbim_tachara.db)**:  
+  - Open with [DB Browser for SQLite](https://sqlitebrowser.org/).  
+  - Contains normalized information on photographs, elements, and their links, with views for typological and chronological queries.  
+
+---
+
+## Note on the Model
+
+The HBIM model is not a historical reconstruction of a specific phase, but rather a semantic and information structure.  
+It was developed as a documentation and experimental environment, linking heterogeneous data (photographs, excavation and restoration activities, typological references) to the 3D model in a transparent and queryable way.  
+
