@@ -225,16 +225,16 @@ In downstream viewers, these parts may appear as distinct elements with separate
 
 ---
 
-## 8. References
-- [^iiif]: IIIF Consortium. *Presentation API 3.0*. 2020. <https://iiif.io/api/presentation/3.0/>  
-- [^iiifcookbook]: IIIF Consortium. *IIIF Cookbook – Content State and Mirador parameters*. <https://iiif.io/api/cookbook/>  
-- [^ifc]: buildingSMART International. *IFC 4.3.2.0 Documentation*. 2023. <https://technical.buildingsmart.org/standards/ifc/ifc-schema-specifications/>  
-- [^ifcvalidation]: buildingSMART International. *IFC Validation Service*. <https://validation.buildingsmart.org/>  
-- [^crm]: ISO/TC46. *CIDOC-CRM v7.1.x (ISO 21127:2023)*. <http://www.cidoc-crm.org>  
-- [^aat]: Getty Research Institute. *Art & Architecture Thesaurus Linked Open Data*. <https://www.getty.edu/research/tools/vocabularies/aat/>  
-- [^blenderbim]: OSArch/BlenderBIM community. *IfcDocumentReference support*. <https://community.osarch.org/>  
-- [^solibri]: Solibri. *Solibri Anywhere*. <https://www.solibri.com/products/anywhere>  
-- [^cors]: IIIF Community discussions on CORS/auth issues for hosted images. See <https://iiif.io/api/auth/1.0/> and common support threads.  
+## 8. References## 8. References
+- IIIF Consortium. *Presentation API 3.0*. 2020. <https://iiif.io/api/presentation/3.0/>  
+- IIIF Consortium. *IIIF Cookbook – Content State and Mirador parameters*. <https://iiif.io/api/cookbook/>  
+- buildingSMART International. *IFC 4.3.2.0 Documentation*. 2023. <https://technical.buildingsmart.org/standards/ifc/ifc-schema-specifications/>  
+- buildingSMART International. *IFC Validation Service*. <https://validation.buildingsmart.org/>  
+- ISO/TC46. *CIDOC-CRM v7.1.x (ISO 21127:2023)*. <http://www.cidoc-crm.org>  
+- Getty Research Institute. *Art & Architecture Thesaurus Linked Open Data*. <https://www.getty.edu/research/tools/vocabularies/aat/>  
+- OSArch/BlenderBIM community. *IfcDocumentReference support*. <https://community.osarch.org/>  
+- Solibri. *Solibri Anywhere*. <https://www.solibri.com/products/anywhere>  
+- IIIF Community. *Discussions on CORS/auth issues for hosted images*. <https://iiif.io/api/auth/1.0/>  
 - Diara, F. & Rinaudo, F. *IFC Classification for FOSS HBIM: Open Issues and a Schema Proposal for Cultural Heritage Assets*. Applied Sciences, 2020. <https://www.mdpi.com/2076-3417/10/23/8320>  
 - Yang, S., Hou, M. *Knowledge graph representation method for semantic 3D modeling of Chinese grottoes*. Heritage Science, 2023. <https://www.nature.com/articles/s40494-023-01084-2>  
 - Historic England. *BIM for Heritage*. 2017. <https://historicengland.org.uk/images-books/publications/bim-for-heritage/>  
