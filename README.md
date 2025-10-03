@@ -19,8 +19,8 @@ The main objectives are:
 - enable diachronic and transparent consultation of images;  
 - develop a protocol aligned with IFC standards (buildingSMART International 2023).  
   *Note:* The work is aligned with IFC standards; the model is currently exported as IFC2x3 (compatibility with Archicad and IfcOpenShell), while methodological choices follow IFC 4.3.2.0.
-- align the web/document layer with IIIF Presentation API 3.0 (IIIF, 2020) [^iiif],  
-  CIDOC-CRM v7.1.x (ISO 21127:2023) [^crm], and Getty AAT/SKOS LOD [^aat].  
+- align the web/document layer with IIIF Presentation API 3.0 (IIIF, 2020),  
+  CIDOC-CRM v7.1.x (ISO 21127:2023), and Getty AAT/SKOS LOD.  
 - build a SQLite data layer for chronological and typological queries.
 
 ## 1.a Nature of the Model
