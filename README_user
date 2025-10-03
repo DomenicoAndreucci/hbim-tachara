@@ -26,6 +26,17 @@ The aim is to demonstrate how photographic sources can be linked to an informati
   Can be opened with free software such as [BlenderBIM](https://blenderbim.org/) (add-on for Blender),  
   [Solibri Anywhere](https://www.solibri.com/products/anywhere), or online with [Flinker](https://viewer.flinker.app/) and [SortDesk](https://viewer.sortdesk.com/).  
 
+## How the data are structured
+
+- **Identity and classification**: each element has identifiers, ensemble IDs (e.g., P10, P16), and is associated with controlled terms (Getty AAT).  
+- **Periods**: chronological references are attached, with explicit bibliographic sources.  
+- **Inscriptions**: epigraphic texts are included with IDs and references.  
+- **Activities**: excavation, restoration, spoliation, reuse, and relocation are represented with lightweight flags and notes.  
+- **Materials and provenance**: stone types, quarry names and coordinates, and references to sources are recorded when available.  
+- **Photographs**: images are connected through HBIM_Doc, and exposed on the web as Collection pages and IIIF manifests or single url.  
+
+This structure keeps the model semantic and query-friendly, while detailed per-photo data remain in the documentation layer (web + database).
+
 ---
 
 ## Key Features
