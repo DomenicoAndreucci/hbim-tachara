@@ -46,6 +46,12 @@ Modeling decisions are based on from standard references — *Persepolis I: Stru
   - `mirador.html` (IIIF viewer with `?manifest=` parameter).
 - **BCF demo**: `Diacronic_View_P10.bcf`  
 
+**Note on the database (hbim_tachara.db):**  
+The SQLite database functions as a lightweight Asset Information Model (AIM).  
+It normalizes photo-level data (`documents`), element-level metadata (`elements`), and links (`doc_links`, `guid_maps`).  
+Two integrated views (`v_search`, `v_docs_year`) support both typological queries (e.g. find all doorjambs documented by Andreucci) and diachronic queries (e.g. photo coverage per year).  
+This data layer complements the IFC model, enabling efficient queries without overloading the geometry with non-structural information.  
+
 ---
 
 ## 3. Implemented Pipeline
@@ -116,7 +122,7 @@ and it relies on standard IFC/CSV files.
 - **Libraries:** `csv`, `json`, `argparse`  
 - **Input:** Manifest CSV, enrichment CSV, `/media/` folder  
 - **Output:** `/manifests/*.json`, `manifests_map.csv`  
-- **Function:** IIIF manifests are generated compatible with **Mirador**,  
+- **Function:** IIIF manifests are generated compatible with Mirador,  
   enabling diachronic comparison of images.
 
 ---
