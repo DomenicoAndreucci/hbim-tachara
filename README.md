@@ -29,6 +29,32 @@ This HBIM representation is conceived not as a precise historical reconstruction
 Only the classes and elements relevant to the CNN dataset were richly annotated; the rest remain geometrical placeholders without full enrichment.  
 Modeling decisions are based on from standard references — *Persepolis I: Structures, Reliefs, Inscriptions* (Schmidt), *Travaux de Restauration* (Zander, ed.), and *Studies and Restorations* (Tilia) — and were adjusted using modern photos to fill gaps in documentation.  
 
+## 1.2 Property Sets implemented
+
+The HBIM model is enriched with a series of lightweight, query-oriented Property Sets. Each serves a specific role:
+
+- **Identity (core IFC + HBIM_Type)**  
+  ifc_guid, label, ensemble_type, EnsembleID, name_suggested — identifiers and human-readable names.
+
+- **Heritage / Type**  
+  Class_URI, AAT_URI, HBIM_Type.ElementType, HBIM_Type.EnsembleID — controlled classification using SKOS and Getty AAT.
+
+- **Period**  
+  HBIM_Period.Primary, HBIM_Period.Secondary, HBIM_Period.Source — chronological references and their bibliographic source.
+
+- **Inscription**  
+  HBIM_Inscription.ID, Text_EN, Reference — identifiers, transcriptions/translations, and sources for epigraphic data.
+
+- **Activity**  
+  HasRestoration, HasExcavation, HasSpoliationAttempt, HasSpoliationSuccess, HasMuseum, Restoration_Period, Excavation_Period, Spoliation_Period, Notes, Reused_At, Reused_Coords, Relocated_Back_Year, Relocated_By — boolean flags and contextual data for the documentation of interventions.
+
+- **Material / Provenance (ComponentAttributes)**  
+  MaterialName, Lithotype, Stratigraphy, QuarryName, QuarryLat, QuarryLon, Distance, Direction, SourceCitation, SourceURL, Quarry_GMaps — materials and provenance information, including quarry identification and references.
+
+- **DocumentReference**  
+  Each photo is linked via HBIM_Doc, with attributes such as photo_id, url, date Min and Max, photographer, owner, url collections and Mirador.  
+
+
 ---
 
 ## 2. Repository Resources
