@@ -23,7 +23,7 @@ The main objectives are:
   CIDOC-CRM v7.1.x (ISO 21127:2023), and Getty AAT/SKOS LOD.  
 - build a SQLite data layer for chronological and typological queries.
 
-## 1.a Nature of the Model
+## 1.1 Nature of the Model
 
 This HBIM representation is conceived not as a precise historical reconstruction of a specific temporal phase, but as a **conceptual model** tailored to the needs of semantic annotation and machine learning datasets (e.g. PeRSeg 14).  
 Only the classes and elements relevant to the CNN dataset were richly annotated; the rest remain geometrical placeholders without full enrichment.  
