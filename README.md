@@ -7,7 +7,7 @@ Proof of Concept status:
 - PoC-B (Collections HTML): completed.  
 - PoC-C (IIIF/Mirador): partial, limited to a public subset.  
 - SQLite database (`hbim_tachara.db`): available.  
-- Advanced PSet (Inscriptions, Restorations, Deterioration): not implemented.  
+- Advanced PSet (Restorations, Deterioration): not implemented.  
 - GlobalId handling for composite elements: non-standard solution.
 
 ---
@@ -25,8 +25,8 @@ The main objectives are:
 
 ## 1.1 Nature of the Model
 
-This HBIM representation is conceived not as a precise historical reconstruction of a specific temporal phase, but as a **conceptual model** tailored to the needs of semantic annotation and machine learning datasets (e.g. PeRSeg 14).  
-Only the classes and elements relevant to the CNN dataset were richly annotated; the rest remain geometrical placeholders without full enrichment.  
+This HBIM representation is conceived not as a precise historical reconstruction of a specific temporal phase, but as a **conceptual model**.  
+Only the classes and elements relevant to the CNN dataset were annotated; the rest remain geometrical placeholders without enrichment.  
 Modeling decisions are based on from standard references — *Persepolis I: Structures, Reliefs, Inscriptions* (Schmidt), *Travaux de Restauration* (Zander, ed.), and *Studies and Restorations* (Tilia) — and were adjusted using modern photos to fill gaps in documentation.  
 
 ## 1.2 Property Sets implemented
@@ -76,7 +76,7 @@ The HBIM model is enriched with a series of lightweight, query-oriented Property
 The SQLite database functions as a lightweight Asset Information Model (AIM).  
 It normalizes photo-level data (`documents`), element-level metadata (`elements`), and links (`doc_links`, `guid_maps`).  
 Two integrated views (`v_search`, `v_docs_year`) support both typological queries (e.g. find all doorjambs documented by Andreucci) and diachronic queries (e.g. photo coverage per year).  
-This data layer complements the IFC model, enabling efficient queries without overloading the geometry with non-structural information.  
+This data layer complements the IFC model, enabling efficient queries without overloading the geometry with non structural information.  
 
 ---
 
@@ -117,11 +117,11 @@ and it relies on standard IFC/CSV files.
 
 - **Script:** `make_docrefs_from_manifest_ifcaware.py`  
 - **Libraries:** `ifcopenshell`, `csv`, `re`  
-- **Input:** Updated IFC, `DocManifest_TEMPLATE_normalized.csv` (photo→GUID map)  
+- **Input:** Updated IFC, `DocManifest_TEMPLATE_normalized.csv` (photo---GUID map)  
 - **Output:** IFC with `IfcDocumentReference` and `IfcRelAssociatesDocument` for each photo  
 - **Function:**  
   - Links each image to IFC elements  
-  - Automatically converts Google Drive links into direct links  
+  - Converts Google Drive links into direct links  
   - Exports CSV of missing GUIDs
 
 ---
@@ -137,7 +137,7 @@ and it relies on standard IFC/CSV files.
   - Year  
   - Author  
   - Owner  
-  - Inline previews
+  - Inline previews (TO FIX)
 
 ---
 
@@ -162,8 +162,8 @@ and it relies on standard IFC/CSV files.
 - **Function:** A lightweight AIM (Asset Information Model) is created with:  
 -- **Tables:** `documents`, `doc_links`, `elements`, `guid_maps`  
 -- **Views:**  
-   - `v_search` → integrates element metadata with links to collections/manifests  
-   - `v_docs_year` → chronological series of photos per GUID  
+   - `v_search`  integrates element metadata with links to collections/manifests  
+   - `v_docs_year`  chronological series of photos per GUID  
 - Supports both typological and diachronic queries.
 
 
@@ -195,8 +195,8 @@ and it relies on standard IFC/CSV files.
 ## 5. Current Limitations
 - PoC-C incomplete: only public subset of images.  
 - Masks/JSON annotations not yet integrated.  
-- Inscriptions scarcely populated; Restorations and Deterioration not implemented.  
-- Missing PhotoPose/camera coordinates.  
+- Restorations and Deterioration not implemented.  
+- Missing PhotoPose-camera coordinates (BCF do something).  
 - GlobalId handling for composite elements: non-standard solution
 - IfcSite coordinates approximate.  
 - AAT/SKOS URIs need consolidation.  
@@ -205,13 +205,13 @@ and it relies on standard IFC/CSV files.
 
 ### Note on Image Rights
 The public subset of images in /media/ consists exclusively of photographs for which full copyright is held by the author. The subset has been published only as a technical **proof-of-concept**, demonstrating how the workflow could support FAIR and open access dissemination if copyright restrictions were lifted in the future.  
-Most archival photographs referenced in the database remain subject to restrictive copyright conditions and are therefore not distributed here.   
+Most archival photographs referenced in the database remain subject to restrictive copyright conditions and are therefore not distributed here but in colletions (GDrive based).   
 
 
 
 #### Note on GUIDs and Composite Elements
 
-All GlobalIds (GUIDs) in the IFC model are formally valid. However, certain architectural elements—specifically architrave trims and doorjambs, were originally modeled in Archicad as composite pillars, not separate sub-elements. 
+All GlobalIds (GUIDs) in the IFC model are formally valid. However, certain architectural elements specifically architrave trims and doorjambs, were originally modeled in Archicad as composite pillars, not separate sub-elements. 
 During IFC export, software generates **derived GUIDs** for the split parts, resulting in additional, automatically generated identifiers. 
 In downstream viewers, these parts may appear as distinct elements with separate GUIDs. To maintain associativity, shared information has been duplicated: for example, the aggregated element A+B carries the same metadata as the individual parts A and B. This non-standard but pragmatic solution has been adopted to allow more granular linking without breaking referential consistency.
 
@@ -224,11 +224,7 @@ In downstream viewers, these parts may appear as distinct elements with separate
 - Extend DocumentReference to masks and JSON files.  
 - Populate HBIM_Inscription with transcriptions/TEI.  
 - Implement HBIM_Restoration and HBIM_Deterioration PSet.  
-- Validate GlobalId with IfcOpenShell scripts.  
-- Refine IfcSite geographic coordinates.  
-- Regenerate complete IIIF manifests on `/media/`.  
-- Extend database with flags for activities and inscriptions.  
-- Provide operational guidelines for selective image publishing (public/private).  
+- Extend database with flags for inscriptions and material provenance.   
 
 ---
 
