@@ -11,8 +11,15 @@ The aim is to demonstrate how photographic sources can be linked to an informati
 
 ## How to Explore
 
-- **Integrated search** (by year, photographer, type of element):  
-  [Open the search interface](https://domenicoandreucci.github.io/hbim-tachara/search.html?v=20)  
+- - **Integrated search (original version):**
+  [Open Search](https://domenicoandreucci.github.io/hbim-tachara/search.html?v=20)
+
+- **Search v2 — consultation preview:**
+  [Open Search v2](https://domenicoandreucci.github.io/hbim-tachara/search_v2.html)
+
+  This version adds an annotated historical plan of the Tachara
+  and chronological ordering of photographs within the linked
+  Collections. Search filters and documentary associations remain unchanged.
 
 - **Photo galleries by element**:  
   [Open a sample gallery](https://domenicoandreucci.github.io/hbim-tachara/collections/28bUwV09TEPxTsAjz_1GHW.html)  
