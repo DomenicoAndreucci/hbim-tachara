@@ -241,14 +241,14 @@ In downstream viewers, these parts may appear as distinct elements with separate
   *Note:* Mirador also supports the `iiif-content` parameter (IIIF Cookbook),  
   but this repository and scripts use `?manifest=` for consistency.
 
-- **Integrated search (original version):**
-  [Search](https://domenicoandreucci.github.io/hbim-tachara/search.html)
+- **Integrated search — original version:**
+  [Open Search](https://domenicoandreucci.github.io/hbim-tachara/search.html)
 
-  **Search v2 (consultation preview):**
-  [Search v2](https://domenicoandreucci.github.io/hbim-tachara/search_v2.html)
+  **Integrated search v2 — chronological Collections and annotated plan:**
+  [Open Search v2](https://domenicoandreucci.github.io/hbim-tachara/search_v2.html)
 
-  This version adds an annotated historical plan of the Tachara
-  and chronological ordering of photographs within the linked Collections.
+  This version adds chronological ordering of photographs within
+  the Collections and an annotated historical plan of the Tachara.
   Search filters and documentary associations remain unchanged.
 
 - **Database:**  
